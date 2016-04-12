@@ -1,3 +1,3 @@
 # stuwebfk
 node学习
-http://forjs.org/book/gyTCIRi5zx/section/
+http://forjs.org/book/
