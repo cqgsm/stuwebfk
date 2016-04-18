@@ -4,7 +4,6 @@ var url = require("url");//url模块
 
 var server = http.createServer();//创建一个http.Server实例
 server.on("request",handle);//当有客户端访问的时候，创建一个request请求，并调用handle处理
-
 /*
 * request : 只读流 --> http.incomingMessage(翻译：外来信息) 类型
 * response：可写流---> http.ServerResponse 类型
