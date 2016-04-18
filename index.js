@@ -5,6 +5,6 @@ var App = require("./lib/App"),
     middle02 = require('./show_middle/middle02');
 app.use(middle01);
 app.use(middle02);
-
+console.log(1);
 app.listen(3000);
 
