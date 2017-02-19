@@ -1,0 +1,80 @@
+<% include ../../includes/header %>
+<template id="signin">
+    <section id="content" class="m-t-lg wrapper-md animated fadeInUp">
+        <div class="container aside-xl">
+            <a class="navbar-brand block"><span class="h1 font-bold">登录</span></a>
+            <section class="m-b-lg">
+                <header class="wrapper text-center">
+                    <strong>输入账号密码登录</strong>
+                </header>
+                <form action="" id="signin_form">
+                    <div class="form-group">
+                        <input type="text" placeholder="邮箱" name="user[email]" name="user[email]" maxlength="20" autocomplete="off"  class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[email]"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="密码" autocomplete="off" name="user[password]" class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[password]"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="验证码" autocomplete="off" name="user[captcha]" class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[captcha]"></span>
+                    </div>
+                    <button type="submit" id="btn-submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">登录</span></button>
+                    <div class="text-center m-t m-b"><a href="#"><small>忘记密码?</small></a></div>
+                    <div class="line line-dashed"></div>
+                    <p class="text-muted text-center"><small>没有账号</small></p>
+                    <a href="/signup" class="btn btn-lg btn-info btn-block rounded">注册账号</a>
+                </form>
+            </section>
+        </div>
+    </section>
+</template>
+<script src="js/validator/jquery.validator.min.js?local=zh-CN"></script>
+<script>
+    $('#content .wrapper').html(' ');
+    var html = template('signin', {});
+    $('#content .wrapper').html(html);
+//表单验证
+    $('#signin_form').validator({
+        focusCleanup: true,
+        stopOnError:false,
+        timely: 2,
+        fields: {
+            "user[email]": {
+                rule: "required;email;",
+                tip: "你的邮件地址是什么?",
+                ok: "我们将会给你发送确认邮件。",
+                msg: {
+                    required: "电子邮箱地址必填!",
+                    email: "不像是有效的电子邮箱。"
+                }
+            },
+            "user[password]": {
+                rule: "required;length[6~];password;",
+                tip: "6个或更多字符! 要复杂些。",
+                ok: "太棒了，密码符合规则",
+                msg: {
+                    required: "密码不能为空!",
+                    length: "密码最少为6位。"
+                }
+            }
+        },
+        //验证成功
+        valid: function(form) {
+            $.ajax({
+                url: 'results.php',
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function(d){
+                    $('#result').fadeIn(300).delay(2000).fadeOut(500);
+                }
+            });
+        },
+        //验证失败
+        invalid: function(form) {
+        }
+    });
+</script>
+
+<% include ../../includes/footer %>

@@ -1,0 +1,114 @@
+<% include ../../includes/header %>
+<template id="signup">
+    <section id="content" class="m-t-lg wrapper-md animated fadeInDown">
+        <div class="container aside-xl">
+            <a class="navbar-brand block" href="index.html"><span class="h1 font-bold">注册</span></a>
+            <section class="m-b-lg">
+                <header class="wrapper text-center">
+                    <strong>填写以下信息，开启梦梦神奇之旅吧</strong>
+                </header>
+                <form action="" id="signup_form">
+                    <div class="form-group">
+                        <input placeholder="昵称" name="user[name]" class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[name]"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="email" placeholder="邮箱" name="user[email]"
+                               class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[email]"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="密码" name="user[password]"
+                               class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[password]"></span>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" placeholder="确认密码" name="user[rePassword]"
+                               class="form-control rounded input-lg text-center">
+                        <span class="msg-box n-right" style="margin-top: 10px;" for="user[rePassword]"></span>
+                    </div>
+                    <div class="checkbox i-checks m-b" style="line-height: 24px;">
+                        <label class="m-l">
+                            <input type="checkbox" data-rule="checked"><i></i> 同意 <a href="#">本网站条款</a>
+                        </label>
+                    </div>
+                    <button type="submit" class="btn btn-lg btn-warning lt b-white b-2x btn-block btn-rounded"><i
+                                class="icon-arrow-right pull-right"></i><span class="m-r-n-lg">注册</span></button>
+                    <div class="line line-dashed"></div>
+                    <p class="text-muted text-center">
+                        <small>已经有账号了</small>
+                    </p>
+                    <a href="/signin" class="btn btn-lg btn-info btn-block btn-rounded">登录</a>
+                </form>
+            </section>
+        </div>
+    </section>
+</template>
+<script src="js/validator/jquery.validator.min.js?local=zh-CN"></script>
+<script>
+    $('#content .wrapper').html(' ');
+    var html = template('signup', {});
+    $('#content .wrapper').html(html);
+    //表单验证
+    $('#signup_form').validator({
+        focusCleanup: true,
+        stopOnError: false,
+        timely: 2,
+        //自定义规则（PS：建议尽量在全局配置中定义规则，统一管理）
+        rules: {
+            username: [/^[a-zA-Z0-9\u4e00-\u9fa5]+$/, '用户名无效! 仅支持字母与数字和汉字。']
+        },
+        fields: {
+            "user[email]": {
+                rule: "required;email;",
+                tip: "你的邮件地址是什么?",
+                ok: "我们将会给你发送确认邮件。",
+                msg: {
+                    required: "电子邮箱地址必填!",
+                    email: "不像是有效的电子邮箱。"
+                }
+            },
+            "user[rePassword]": {
+                rule: "确认密码:required;password;match(user[password]);",
+                tip: "请确认密码",
+                ok: "太棒了，两次密码相同",
+                msg: {
+                    required: "密码不能为空!"
+                }
+            },
+            "user[name]":{
+                rule: "required;username;length[2~15];",
+                tip: "请填写昵称，稍后可以修改",
+                ok: "很棒的昵称啊",
+                msg: {
+                    required: "昵称必须填写"
+                }
+            },
+            "user[password]": {
+                rule: "密码:required;length[6~];password;",
+                tip: "6个或更多字符! 要复杂些。",
+                ok: "太棒了，密码符合规则",
+                msg: {
+                    required: "密码不能为空!",
+                    length: "密码最少为6位。"
+                }
+            }
+        },
+        //验证成功
+        valid: function (form) {
+            $.ajax({
+                url: 'results.php',
+                type: 'POST',
+                data: $(form).serialize(),
+                success: function (d) {
+                    $('#result').fadeIn(300).delay(2000).fadeOut(500);
+                }
+            });
+        },
+        //验证失败
+        invalid: function (form) {
+        }
+    });
+</script>
+
+<% include ../../includes/footer %>
